@@ -1,11 +1,17 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname markov-chain-fauxsox) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp")) #f)))
-;;;;;;-MARKOV-CHAIN-SIMULATION-;;;;;;
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname markov-chain) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp")) #f)))
+;;;;;;MARKOV CHAIN SIMULATION;;;;;;
 
+;;;;;;DATA DEFINITIONS;;;;;;
 (define-struct node [id next])
 ;; A Node is a (make-node String [List-of Number])
 ;; and represents a state in the chain and the probabilities of each next Node in a Markov chain.
+
+;; A Chain is a [List-of Node]
+;; and represents a complete Markov diagram
+
+;;;;;;EXAMPLES;;;;;;
 ;; Node Examples:
 (define ANODE1 (make-node "0" '(0.333 0.334 0 0 0 0.333)))
 (define ANODE2 (make-node "1" '(0.333 0.333 0.334 0 0 0)))
@@ -16,24 +22,25 @@
 (define BNODE1 (make-node "1" '(0.7 0.2 0.1)))
 (define BNODE2 (make-node "2" '(0.3 0.6 0.1)))
 (define BNODE3 (make-node "3" '(0.3 0.2 0.5)))
+
+;; Chain Examples:
+(define ACHAIN (list ANODE1 ANODE2 ANODE3 ANODE4 ANODE5 ANODE6))
+(define BCHAIN (list BNODE1 BNODE2 BNODE3))
+
+;;;;;;TEMPLATES;;;;;;
 ;; node-temp : Node -> ???
 #;(define (node-temp node)
   (... (node-id node)
    ... (cond [(empty? (node-next node)) ...]
              [(cons? (node-next node))  ... (first (node-next node))
                                         ... (rest (node-next node))]) ...))
-
-;; A Chain is a [List-of Node]
-;; and represents a complete Markov diagram
-;; Chain Examples:
-(define ACHAIN (list ANODE1 ANODE2 ANODE3 ANODE4 ANODE5 ANODE6))
-(define BCHAIN (list BNODE1 BNODE2 BNODE3))
 ;; chain-temp : Chain -> ???
 #;(define (chain-temp chain)
   (cond [(empty? chain) ...]
         [(cons? chain) ... (node-temp (first chain))
                        ... (node-temp (rest chain))]))
 
+;;;;;;FUNCTIONS;;;;;;
 (define rand-decimal (λ (_) (/ (random 10000) 10000)))
 
 ;; simulate : Number Chain Node -> [List-of Node]
